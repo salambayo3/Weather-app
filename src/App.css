@@ -1,0 +1,321 @@
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&display=swap");
+
+/* Registering these lets the sky fade smoothly between conditions */
+@property --sky-top {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #1b2340;
+}
+@property --sky-bottom {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #34426f;
+}
+@property --glow {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: rgba(0, 0, 0, 0);
+}
+
+.app {
+  --sky-top: #1b2340;
+  --sky-bottom: #34426f;
+  --glow: rgba(150, 170, 255, 0.18);
+
+  min-height: 100svh;
+  padding: clamp(20px, 4vw, 56px);
+  color: #fff;
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  background:
+    radial-gradient(50rem 32rem at 88% 8%, var(--glow), transparent 70%),
+    linear-gradient(180deg, var(--sky-top), var(--sky-bottom));
+  transition:
+    --sky-top 1.4s ease,
+    --sky-bottom 1.4s ease,
+    --glow 1.4s ease;
+}
+
+.app[data-sky="clear-day"] {
+  --sky-top: #0e3578;
+  --sky-bottom: #2f6fc0;
+  --glow: rgba(255, 205, 120, 0.55);
+}
+.app[data-sky="clear-night"] {
+  --sky-top: #070b24;
+  --sky-bottom: #1e2a5e;
+  --glow: rgba(190, 205, 255, 0.22);
+}
+.app[data-sky="cloud-day"] {
+  --sky-top: #34455c;
+  --sky-bottom: #56687f;
+  --glow: rgba(255, 255, 255, 0.14);
+}
+.app[data-sky="cloud-night"] {
+  --sky-top: #12161f;
+  --sky-bottom: #2a3140;
+  --glow: rgba(255, 255, 255, 0.06);
+}
+.app[data-sky="rain"] {
+  --sky-top: #1c2633;
+  --sky-bottom: #3b4f64;
+  --glow: rgba(160, 190, 230, 0.12);
+}
+.app[data-sky="storm"] {
+  --sky-top: #170f2e;
+  --sky-bottom: #43306b;
+  --glow: rgba(200, 170, 255, 0.25);
+}
+.app[data-sky="snow"] {
+  --sky-top: #3e4f68;
+  --sky-bottom: #5f738d;
+  --glow: rgba(255, 255, 255, 0.25);
+}
+.app[data-sky="fog"] {
+  --sky-top: #454e58;
+  --sky-bottom: #6c7681;
+  --glow: rgba(255, 255, 255, 0.18);
+}
+
+.shell {
+  max-width: 70rem;
+  margin: 0 auto;
+  text-align: left;
+}
+
+button {
+  font: inherit;
+  border: 0;
+  cursor: pointer;
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Top bar */
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 24px;
+}
+
+.search {
+  display: flex;
+  flex: 1 1 18rem;
+  max-width: 26rem;
+  align-items: center;
+  gap: 12px;
+}
+
+.search input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.6rem 0;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 1.125rem;
+}
+
+.search input::placeholder {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.search button {
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  background: #fff;
+  color: #14234a;
+  font-weight: 600;
+}
+
+.units {
+  display: inline-flex;
+  padding: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 999px;
+}
+
+.units button {
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+}
+
+.units button[aria-pressed="true"] {
+  background: #fff;
+  color: #14234a;
+  font-weight: 600;
+}
+
+/* Messages */
+.status {
+  min-height: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.status p {
+  margin: 0;
+}
+
+.error {
+  font-weight: 500;
+}
+
+.empty {
+  max-width: 22ch;
+  margin: 12vh 0 0;
+  font-size: clamp(1.75rem, 5vw, 3rem);
+  font-weight: 300;
+  line-height: 1.15;
+}
+
+/* Results */
+.board {
+  display: grid;
+  gap: clamp(2rem, 6vw, 5rem);
+  margin-top: clamp(1rem, 6vh, 4rem);
+  animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@media (min-width: 52rem) {
+  .board {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    align-items: end;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+.place {
+  margin: 0;
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  font-weight: 500;
+}
+
+.now {
+  margin: 0.1em 0 0;
+  font-size: clamp(7rem, 24vw, 15rem);
+  font-weight: 200;
+  font-variation-settings: "wdth" 80;
+  letter-spacing: -0.045em;
+  line-height: 0.85;
+}
+
+.now sup {
+  margin-left: 0.08em;
+  font-size: 0.26em;
+  font-weight: 300;
+  letter-spacing: 0;
+  line-height: 1.2;
+  vertical-align: top;
+}
+
+.condition {
+  margin: 0.5rem 0 0;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.facts {
+  display: grid;
+  gap: 0.4rem;
+  max-width: 18rem;
+  margin: 2rem 0 0;
+}
+
+.facts div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.facts dt {
+  font-weight: 300;
+}
+
+.facts dd {
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Forecast */
+.week ul {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.week li {
+  display: grid;
+  grid-template-columns: 3.25rem 2rem 2.5rem 1fr 2.5rem;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.day {
+  font-weight: 500;
+}
+
+.icon {
+  font-size: 1.35rem;
+  text-align: center;
+}
+
+.lo {
+  font-weight: 300;
+  text-align: right;
+}
+
+.hi {
+  font-weight: 600;
+}
+
+.range {
+  position: relative;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  min-width: 6px;
+  border-radius: 999px;
+  background: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app {
+    transition: none;
+  }
+  .board {
+    animation: none;
+  }
+}
